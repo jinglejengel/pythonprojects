@@ -2,7 +2,6 @@
 Simple Comment Parser which uses praw (Python API for Reddit) and pymongo (Python driver for MongoDB) to store certain comment attributes into
 a MongoDB Database.
 """
-
 import pymongo
 import praw
 
