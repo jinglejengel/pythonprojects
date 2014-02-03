@@ -19,4 +19,4 @@ sql = 'SELECT "table", "date", "year_month", "year", "month", "day", "weekday", 
 res = treasuryio.query(sql, format='dict')
 
 for record in res:
-        db.creditlimit.insert(record)
+        db.creditlimit.save(record)
