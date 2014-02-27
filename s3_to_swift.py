@@ -46,6 +46,7 @@ for key in bucket.list():
         # Store this then, to CF and confirm
         obj = cf.store_object(cont, key.name, key.name)
         print "Stored object: %s as %s" % (obj, key.name)
+        os.remove(key.name)
     except Exception as e:
         print e
         print "%s failed to download!" % key.name
