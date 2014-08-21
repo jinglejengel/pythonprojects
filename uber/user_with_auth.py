@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 import argh
 import json
-import os
 
 from requests_oauthlib import OAuth2Session
 
-CLIENT_ID = os.environ.get('CLIENT_ID')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-REDIRECT_URI = os.environ.get('REDIRECT_URI')
+from uber_conf import *
+
+client_id = CLIENT_ID
+client_secret = CLIENT_SECRET
+redirect_uri = REDIRECT_URI
+
 AUTHORIZATION_BASE_URL = 'https://login.uber.com/oauth/authorize'
 
 
