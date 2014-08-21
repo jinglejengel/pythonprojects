@@ -1,10 +1,12 @@
 import requests
 import json
 
+from uber_conf import *
+
 products_url = 'https://api.uber.com/v1/products'
 
 parameters = {
-    'server_token': '',
+    'server_token': SERVER_TOKEN,
     'latitude': 29.437730,
     'longitude': -98.478785,
 }
@@ -19,7 +21,7 @@ print
 time_url = 'https://api.uber.com/v1/estimates/time'
 
 parameters = {
-    'server_token': '',
+    'server_token': SERVER_TOKEN,
     'start_latitude': 29.437730,
     'start_longitude': -98.478785,
 }
@@ -34,7 +36,7 @@ print
 price_url = 'https://api.uber.com/v1/estimates/price'
 
 parameters = {
-    'server_token': '',
+    'server_token': SERVER_TOKEN,
     'start_latitude': 29.437730,
     'start_longitude': -98.478785,
     'end_latitude': 29.508241,
