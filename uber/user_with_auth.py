@@ -15,8 +15,7 @@ def main():
     callback_url = make_url()
 
     token_url = 'https://login.uber.com/oauth/token'
-    token = oauth.fetch_token(token_url, authorization_response=callback_url,
-                              client_secret=CLIENT_SECRET)
+    token = oauth.fetch_token(token_url, authorization_response=callback_url, client_secret=CLIENT_SECRET)
 
     resources = ['me', 'history']
 
