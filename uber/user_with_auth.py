@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 import json
+import redis
 
 from requests_oauthlib import OAuth2Session
 
 from uber_conf import *
+
+
+r = redis.StrictRedis()
 
 client_id = CLIENT_ID
 client_secret = CLIENT_SECRET
@@ -20,7 +24,11 @@ def main():
     resources = ['me', 'history']
 
     for resource in resources:
-      print fetch(resource)
+      res = fetch(resource)
+      find_email = json.loads(res)
+      if 'email' in find_email:
+        r.setex(find_email['email'], token['expires_in'], token)
+      print res
 
 def make_url():
     global oauth
