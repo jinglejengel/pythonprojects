@@ -18,10 +18,10 @@ AUTHORIZATION_BASE_URL = 'https://login.uber.com/oauth/authorize'
 
 def main(user_email):
     global oauth
-    if r.get(user_email):
+    try:
       token = eval(r.get(user_email))
       oauth = OAuth2Session(client_id, token=token)
-    else:
+    except:
       oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
       callback_url = make_url()
       token_url = 'https://login.uber.com/oauth/token'
