@@ -1,34 +1,35 @@
-from requests_oauthlib import OAuth2Session
+#!/usr/bin/env python
+import argh
 import json
+import os
 
-from uber_conf import *
+from requests_oauthlib import OAuth2Session
 
-client_id = CLIENT_ID
-client_secret = CLIENT_SECRET
-redirect_uri = REDIRECT_URI
-
-oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
-authorization_url, state = oauth.authorization_url(
-        'https://login.uber.com/oauth/authorize')
-
-print 'Please go to %s and authorize access.' % authorization_url
-authorization_response = raw_input('Enter the full callback URL: ')
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+REDIRECT_URI = os.environ.get('REDIRECT_URI')
+AUTHORIZATION_BASE_URL = 'https://login.uber.com/oauth/authorize'
 
 
-token = oauth.fetch_token(
-        'https://login.uber.com/oauth/token',
-        authorization_response=authorization_response,
-        client_secret=client_secret)
+def main(callback_url):
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
+    authorization_url, state = oauth.authorization_url(AUTHORIZATION_BASE_URL)
 
-prof = oauth.get('https://api.uber.com/v1/me')
-hist = oauth.get('https://api.uber.com/v1/history')
+    token_url = 'https://login.uber.com/oauth/token'
+    token = oauth.fetch_token(token_url, authorization_response=callback_url,
+                              client_secret=CLIENT_SECRET)
 
-print "Your profile is: "
-print json.dumps(prof.json(), indent=4)
+    resources = ['me', 'history']
+    print map(jsonify(fetch(resource)), resources)
 
-print
 
-print "Your history is: "
-print json.dumps(hist.json(), indent=4)
+def fetch(resource):
+    endpoint = 'https://api.uber.com/v1/%s' % resource
+    resp = oauth.get(endpoint)
+    return resp.json()
 
-print
+
+def jsonify(payload):
+    return json.dumps(payload, sort_keys=True, indent=2, separators=(',', ': '))
+
+argh.dispatch_command(main)
