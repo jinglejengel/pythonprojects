@@ -1,9 +1,11 @@
 from requests_oauthlib import OAuth2Session
 import json
 
-client_id = r''
-client_secret = r''
-redirect_uri = 'https://67.192.246.50'
+from uber_conf import *
+
+client_id = CLIENT_ID
+client_secret = CLIENT_SECRET
+redirect_uri = REDIRECT_URI
 
 oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
 authorization_url, state = oauth.authorization_url(
