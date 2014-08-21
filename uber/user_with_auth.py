@@ -39,7 +39,6 @@ def fetch(resource):
 
 
 def jsonify(payload):
-    print "I MADE IT HERE I PROMISE"
     return json.dumps(payload, indent=2)
 
 main()
