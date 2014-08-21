@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argh
 import json
 import redis
 
@@ -15,11 +16,16 @@ redirect_uri = REDIRECT_URI
 
 AUTHORIZATION_BASE_URL = 'https://login.uber.com/oauth/authorize'
 
-def main():
-    callback_url = make_url()
-
-    token_url = 'https://login.uber.com/oauth/token'
-    token = oauth.fetch_token(token_url, authorization_response=callback_url, client_secret=CLIENT_SECRET)
+def main(user_email):
+    global oauth
+    if r.get(user_email):
+      token = eval(r.get(user_email))
+      oauth = OAuth2Session(client_id, token=token)
+    else:
+      oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
+      callback_url = make_url()
+      token_url = 'https://login.uber.com/oauth/token'
+      token = oauth.fetch_token(token_url, authorization_response=callback_url, client_secret=CLIENT_SECRET)
 
     resources = ['me', 'history']
 
@@ -31,8 +37,6 @@ def main():
       print res
 
 def make_url():
-    global oauth
-    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
     authorization_url, state = oauth.authorization_url(AUTHORIZATION_BASE_URL)
 
     print "Please visit %s and enter in the full callback URL" % authorization_url
@@ -49,4 +53,4 @@ def fetch(resource):
 def jsonify(payload):
     return json.dumps(payload, indent=2)
 
-main()
+argh.dispatch_command(main)
